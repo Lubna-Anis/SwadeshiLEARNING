@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Swadeshi Learning</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #FF9933;
+            --secondary-color: #138808;
+            --dark-bg: #0a0b0f;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-light: rgba(255, 255, 255, 0.9);
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+        
+        /* Navbar */
+        .navbar {
+            transition: all 0.4s ease;
+            padding: 1.2rem 0;
+            background: rgba(10, 11, 15, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+        
+        .navbar.scrolled {
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            padding: 0.8rem 0;
+        }
+        
+        .navbar-brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-light) !important;
+        }
+        
+        .navbar-brand span {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 1rem !important;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after {
+            width: 80%;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .dropdown-menu {
+            background: rgba(10, 11, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 0.5rem 0;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown-item {
+            color: var(--text-light);
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: var(--glass-bg);
+            color: var(--primary-color);
+        }
+
+        .dropdown-item i {
+            margin-right: 0.5rem;
+            width: 20px;
+        }
+
+        .dropdown-submenu {
+            position: relative;
+        }
+
+        .dropdown-submenu .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -1px;
+            margin-left: 0.1rem;
+        }
+
+        .dropdown-submenu:hover > .dropdown-menu {
+            display: block;
+        }
+
+        @media (max-width: 991px) {
+            .dropdown-submenu .dropdown-menu {
+                position: static;
+                left: 0;
+                margin-left: 1rem;
+                border-left: 2px solid var(--primary-color);
+            }
+        }
+        
+        .btn-login {
+            color: var(--text-light) !important;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem !important;
+            border: none;
+            background: transparent;
+            transition: color 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            color: var(--primary-color) !important;
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            padding-top: 100px;
+            padding-bottom: 4rem;
+            min-height: 100vh;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .quiz-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-description {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* Quiz Selection */
+        .quiz-selection {
+            display: none;
+        }
+
+        .quiz-selection.active {
+            display: block;
+        }
+
+        .quiz-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 15px 40px rgba(255, 153, 51, 0.2);
+        }
+
+        .quiz-card-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .quiz-card h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .quiz-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar-custom {
+            height: 8px;
+            background: var(--glass-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Quiz Content */
+        .quiz-content {
+            display: none;
+        }
+
+        .quiz-content.active {
+            display: block;
+        }
+
+        .question-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .question-number {
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .question-type {
+            display: inline-block;
+            background: rgba(255, 153, 51, 0.1);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Options */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .option {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-left: 3.5rem;
+        }
+
+        .option:hover {
+            border-color: var(--primary-color);
+            background: rgba(255, 153, 51, 0.05);
+        }
+
+        .option input {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary-color);
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            background: rgba(255, 153, 51, 0.1);
+        }
+
+        .option.correct {
+            border-color: var(--success-color);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .option.incorrect {
+            border-color: var(--danger-color);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Feedback */
+        .feedback-box {
+            background: var(--glass-bg);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .feedback-box.correct {
+            border-left-color: var(--success-color);
+        }
+
+        .feedback-box.incorrect {
+            border-left-color: var(--danger-color);
+        }
+
+        .feedback-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feedback-text {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Buttons */
+        .quiz-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 153, 51, 0.3);
+        }
+
+        .btn-primary-custom:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary-custom {
+            background: var(--glass-bg);
+            color: var(--text-light);
+            border: 1px solid var(--glass-border);
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary-custom:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Results */
+        .results-section {
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .results-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .results-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .results-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .results-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .badge-earned {
+            font-size: 3rem;
+            margin: 1rem 0;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .share-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .quiz-container {
+                padding-top: 80px;
+            }
+
+            .quiz-title {
+                font-size: 1.8rem;
+            }
+
+            .question-card {
+                padding: 1.5rem;
+            }
+
+            .question-text {
+                font-size: 1.1rem;
+            }
+
+            .results-card {
+                padding: 2rem;
+            }
+
+            .score-circle {
+                width: 120px;
+                height: 120px;
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><span>Swadeshi</span> Learning</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">HOME</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="libraryDropdown" role="button" data-bs-toggle="dropdown">
+                            LIBRARY
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="libraryDropdown">
+                            <li><a class="dropdown-item" href="book.html"><i class="fas fa-book"></i>BOOKS</a></li>
+                            <li><a class="dropdown-item" href="scriptures.html"><i class="fas fa-om"></i>Ancient Scriptures</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="quiz.html">QUIZ</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-login">Login</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Quiz Container -->
+    <div class="quiz-container">
+        <div class="container">
+            <!-- Header -->
+            <div class="quiz-header">
+                <h1 class="quiz-title">Knowledge Quest</h1>
+                <p class="quiz-description">Test your knowledge and learn from our interactive quizzes</p>
+            </div>
+
+            <!-- Quiz Selection Screen -->
+            <div class="quiz-selection active" id="quizSelection">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="quiz-card" onclick="startQuiz(1)">
+                            <div class="quiz-card-icon"><i class="fas fa-om"></i></div>
+                            <h4>Ancient Scriptures</h4>
+                            <p>Test your knowledge about Vedas, Upanishads, and sacred Hindu texts</p>
+                            <div class="quiz-meta">
+                                <span><i class="fas fa-question-circle"></i> 8 Questions</span>
+                                <span><i class="fas fa-clock"></i> 5 mins</span>
+                                <span><i class="fas fa-star"></i> Easy</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="quiz-card" onclick="startQuiz(2)">
+                            <div class="quiz-card-icon"><i class="fas fa-book-open"></i></div>
+                            <h4>Indian History</h4>
+                            <p>Explore India's rich historical heritage through engaging questions</p>
+                            <div class="quiz-meta">
+                                <span><i class="fas fa-question-circle"></i> 10 Questions</span>
+                                <span><i class="fas fa-clock"></i> 7 mins</span>
+                                <span><i class="fas fa-star"></i> Medium</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="quiz-card" onclick="startQuiz(3)">
+                            <div class="quiz-card-icon"><i class="fas fa-spa"></i></div>
+                            <h4>Yoga & Wellness</h4>
+                            <p>Learn about traditional yogic practices and wellness in Hinduism</p>
+                            <div class="quiz-meta">
+                                <span><i class="fas fa-question-circle"></i> 6 Questions</span>
+                                <span><i class="fas fa-clock"></i> 4 mins</span>
+                                <span><i class="fas fa-star"></i> Beginner</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Content -->
+            <div class="quiz-content" id="quizContent">
+                <!-- Progress Bar -->
+                <div class="progress-section">
+                    <div class="progress-bar-custom">
+                        <div class="progress-bar-fill" id="progressBar"></div>
+                    </div>
+                    <div class="progress-text">
+                        Question <span id="currentQuestion">1</span> of <span id="totalQuestions">8</span>
+                    </div>
+                </div>
+
+                <!-- Question Card -->
+                <div class="question-card" id="questionCard">
+                    <div class="question-type" id="questionTypeTag">Multiple Choice</div>
+                    <div class="question-number">Question <span id="qNum">1</span></div>
+                    <div class="question-text" id="questionText">What is the oldest Veda?</div>
+                    
+                    <div class="options-container" id="optionsContainer">
+                        <!-- Options will be inserted here -->
+                    </div>
+
+                    <!-- Feedback -->
+                    <div class="feedback-box" id="feedbackBox">
+                        <div class="feedback-title" id="feedbackTitle">
+                            <i class="fas fa-check-circle"></i> Correct!
+                        </div>
+                        <div class="feedback-text" id="feedbackText">This is the feedback for the answer</div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="quiz-buttons">
+                    <button class="btn-secondary-custom" onclick="previousQuestion()" id="prevBtn" style="display: none;">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn-primary-custom" onclick="nextQuestion()" id="nextBtn">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div class="results-section" id="resultsSection">
+                <div class="results-card">
+                    <div class="score-circle" id="scoreCircle">8/8</div>
+                    <h2 class="results-title">Quiz Complete!</h2>
+                    <p class="results-subtitle" id="resultMessage">Excellent! You scored 100%</p>
+
+                    <div class="results-stats">
+                        <div class="stat-box">
+                            <div class="stat-label">Score</div>
+                            <div class="stat-value" id="finalScore">100%</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Correct Answers</div>
+                            <div class="stat-value" id="correctAnswers">8/8</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Time Taken</div>
+                            <div class="stat-value" id="timeTaken">4:23</div>
+                        </div>
+                    </div>
+
+                    <div id="badgeContainer"></div>
+
+                    <div class="share-buttons">
+                        <button class="share-btn" title="Share on Facebook" onclick="shareResult('facebook')">
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+                        <button class="share-btn" title="Share on Twitter" onclick="shareResult('twitter')">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+                        <button class="share-btn" title="Share on WhatsApp" onclick="shareResult('whatsapp')">
+                            <i class="fab fa-whatsapp"></i>
+                        </button>
+                        <button class="share-btn" title="Share on LinkedIn" onclick="shareResult('linkedin')">
+                            <i class="fab fa-linkedin-in"></i>
+                        </button>
+                    </div>
+
+                    <button class="btn-primary-custom" style="margin-top: 2rem; width: 100%;" onclick="backToQuizzes()">
+                        <i class="fas fa-redo"></i> Try Another Quiz
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Quiz Data
+        const quizzes = {
+            1: {
+                title: "Ancient Scriptures",
+                questions: [
+                    {
+                        type: "multiple-choice",
+                        question: "What is the oldest Veda?",
+                        options: ["Rigveda", "Samaveda", "Yajurveda", "Atharvaveda"],
+                        correct: 0,
+                        feedback: "The Rigveda is the oldest of the four Vedas, containing 1,028 hymns dedicated to various deities."
+                    },
+                    {
+                        type: "true-false",
+                        question: "The Upanishads are earlier than the Vedas.",
+                        options: ["True", "False"],
+                        correct: 1,
+                        feedback: "False. The Upanishads are part of the Vedas and came later, focusing on philosophical concepts."
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "Which epic contains the Bhagavad Gita?",
+                        options: ["Ramayana", "Mahabharata", "Rigveda", "Puranas"],
+                        correct: 1,
+                        feedback: "The Bhagavad Gita is found within the Mahabharata, the longest epic poem ever written."
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "How many Vedas are there in Hindu scriptures?",
+                        options: ["Two", "Three", "Four", "Six"],
+                        correct: 2,
+                        feedback: "There are four Vedas: Rigveda, Samaveda, Yajurveda, and Atharvaveda."
+                    },
+                    {
+                        type: "true-false",
+                        question: "Smriti texts are considered more authoritative than Shruti texts.",
+                        options: ["True", "False"],
+                        correct: 1,
+                        feedback: "False. Shruti texts are more authoritative as they are considered divine revelations, while Smriti texts are remembered traditions."
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "Who composed the Ramayana?",
+                        options: ["Valmiki", "Vyasa", "Patanjali", "Manu"],
+                        correct: 0,
+                        feedback: "Sage Valmiki composed the Ramayana, the epic tale of Lord Rama."
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "What does 'Shruti' mean?",
+                        options: ["That which is written", "That which is remembered", "That which is heard", "That which is spoken"],
+                        correct: 2,
+                        feedback: "Shruti means 'that which is heard' - divine revelations considered authoritative in Hinduism."
+                    },
+                    {
+                        type: "true-false",
+                        question: "The Puranas are part of Shruti texts.",
+                        options: ["True", "False"],
+                        correct: 1,
+                        feedback: "False. Puranas are part of Smriti texts, not Shruti. They are remembered traditions composed by sages."
+                    }
+                ]
+            },
+            2: {
+                title: "Indian History",
+                questions: [
+                    {
+                        type: "multiple-choice",
+                        question: "In which year did India gain independence?",
+                        options: ["1945", "1947", "1950", "1952"],
+                        correct: 1,
+                        feedback: "India gained independence on August 15, 1947, from British rule."
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "Who is known as the Father of the Indian Nation?",
+                        options: ["Jawaharlal Nehru", "Mahatma Gandhi", "Sardar Patel", "Subhas Chandra Bose"],
+                        correct: 1,
+                        feedback: "Mahatma Gandhi is revered as the Father of the Indian Nation for his role in independence struggle."
+                    },
+                    {
+                        type: "true-false",
+                        question: "The Maurya Empire was founded by Ashoka.",
+                        options: ["True", "False"],
+                        correct: 1,
+                        feedback: "False. The Maurya Empire was founded by Chandragupta Maurya. Ashoka was his grandson."
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "Which dynasty built the Taj Mahal?",
+                        options: ["Mughal", "Gupta", "Maurya", "Chola"],
+                        correct: 0,
+                        feedback: "The Mughal dynasty built the Taj Mahal. Emperor Shah Jahan commissioned it as a tribute to his beloved wife Mumtaz Mahal."
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "Which empire was known for its advances in mathematics and astronomy?",
+                        options: ["Mughal Empire", "Gupta Empire", "Maurya Empire", "British Raj"],
+                        correct: 1,
+                        feedback: "The Gupta Empire, often called the 'Golden Age' of India, made remarkable advances in mathematics, astronomy, and culture."
+                    },
+                    {
+                        type: "true-false",
+                        question: "The Indian Constitution was drafted by Dr. Ambedkar.",
+                        options: ["True", "False"],
+                        correct: 0,
+                        feedback: "True. Dr. B.R. Ambedkar was the principal architect of the Indian Constitution and headed the Drafting Committee."
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "Who founded the Indian National Congress?",
+                        options: ["A.O. Hume", "Surendranath Banerjea", "Dadabhai Naoroji", "Ramakrishna Paramahamsa"],
+                        correct: 0,
+                        feedback: "A.O. Hume, a British civil servant, founded the Indian National Congress in 1885."
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "In which year was the Constitution of India adopted?",
+                        options: ["1947", "1949", "1950", "1952"],
+                        correct: 2,
+                        feedback: "The Constitution of India was adopted on January 26, 1950, which is celebrated as Republic Day."
+                    },
+                    {
+                        type: "true-false",
+                        question: "The Indus Valley Civilization was contemporary with the Egyptian civilization.",
+                        options: ["True", "False"],
+                        correct: 0,
+                        feedback: "True. The Indus Valley Civilization (2300-1700 BCE) existed during the same period as ancient Egypt."
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "Which viceroy introduced English education in India?",
+                        options: ["Lord Curzon", "Lord Macaulay", "Lord Dalhousie", "Lord Ripon"],
+                        correct: 1,
+                        feedback: "Lord Macaulay introduced English education in India through his famous Minute on Education of 1835."
+                    }
+                ]
+            },
+            3: {
+                title: "Yoga & Wellness",
+                questions: [
+                    {
+                        type: "multiple-choice",
+                        question: "How many limbs does classical yoga have according to Patanjali?",
+                        options: ["Four", "Six", "Eight", "Ten"],
+                        correct: 2,
+                        feedback: "Classical yoga has eight limbs (Ashtanga): Yama, Niyama, Asana, Pranayama, Pratyahara, Dharana, Dhyana, and Samadhi."
+                    },
+                    {
+                        type: "true-false",
+                        question: "Asana in yoga refers to meditation poses only.",
+                        options: ["True", "False"],
+                        correct: 1,
+                        feedback: "False. Asana refers to physical postures in yoga that promote physical health and prepare the body for meditation."
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "What does Pranayama mean in yoga?",
+                        options: ["Physical exercise", "Breath control", "Meditation", "Cleansing"],
+                        correct: 1,
+                        feedback: "Pranayama means breath control - the practice of controlling and extending the breath for wellness."
+                    },
+                    {
+                        type: "true-false",
+                        question: "Yoga originated in India over 5,000 years ago.",
+                        options: ["True", "False"],
+                        correct: 0,
+                        feedback: "True. Yoga has ancient roots in India dating back over 5,000 years and is mentioned in the Vedas."
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "Which type of yoga focuses on breath and movement synchronization?",
+                        options: ["Hatha Yoga", "Vinyasa Yoga", "Raja Yoga", "Bhakti Yoga"],
+                        correct: 1,
+                        feedback: "Vinyasa Yoga focuses on flowing movements synchronized with breathing, creating a dynamic practice."
+                    },
+                    {
+                        type: "true-false",
+                        question: "Ayurveda is the ancient Indian system of traditional medicine.",
+                        options: ["True", "False"],
+                        correct: 0,
+                        feedback: "True. Ayurveda is India's traditional system of medicine that balances body, mind, and spirit."
+                    }
+                ]
+            }
+        };
+
+        let currentQuizId = null;
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answers = [];
+        let startTime = null;
+
+        function startQuiz(quizId) {
+            currentQuizId = quizId;
+            currentQuestionIndex = 0;
+            score = 0;
+            answers = [];
+            startTime = Date.now();
+
+            document.getElementById('quizSelection').classList.remove('active');
+            document.getElementById('quizContent').classList.add('active');
+            document.getElementById('totalQuestions').textContent = quizzes[quizId].questions.length;
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const quiz = quizzes[currentQuizId];
+            const question = quiz.questions[currentQuestionIndex];
+
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('qNum').textContent = currentQuestionIndex + 1;
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('questionTypeTag').textContent = question.type === 'multiple-choice' ? 'Multiple Choice' : 'True/False';
+
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('label');
+                optionDiv.className = 'option';
+                optionDiv.innerHTML = `
+                    <input type="radio" name="option" value="${index}" onchange="selectOption(${index})">
+                    <span>${option}</span>
+                `;
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            document.getElementById('feedbackBox').classList.remove('show', 'correct', 'incorrect');
+            document.getElementById('prevBtn').style.display = currentQuestionIndex > 0 ? 'block' : 'none';
+            document.getElementById('nextBtn').textContent = currentQuestionIndex === quiz.questions.length - 1 ? 'Finish <i class="fas fa-flag-checkered"></i>' : 'Next <i class="fas fa-arrow-right"></i>';
+
+            const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function selectOption(index) {
+            const quiz = quizzes[currentQuizId];
+            const question = quiz.questions[currentQuestionIndex];
+            const options = document.querySelectorAll('.option');
+
+            options.forEach(opt => opt.classList.remove('selected'));
+            options[index].classList.add('selected');
+
+            answers[currentQuestionIndex] = index;
+
+            const feedbackBox = document.getElementById('feedbackBox');
+            feedbackBox.classList.add('show');
+
+            if (index === question.correct) {
+                feedbackBox.classList.add('correct');
+                feedbackBox.classList.remove('incorrect');
+                document.getElementById('feedbackTitle').innerHTML = '<i class="fas fa-check-circle" style="color: var(--success-color);"></i> Correct!';
+                score++;
+            } else {
+                feedbackBox.classList.add('incorrect');
+                feedbackBox.classList.remove('correct');
+                document.getElementById('feedbackTitle').innerHTML = '<i class="fas fa-times-circle" style="color: var(--danger-color);"></i> Incorrect!';
+            }
+
+            document.getElementById('feedbackText').textContent = question.feedback;
+        }
+
+        function nextQuestion() {
+            const quiz = quizzes[currentQuizId];
+
+            if (answers[currentQuestionIndex] === undefined) {
+                alert('Please select an answer before proceeding');
+                return;
+            }
+
+            if (currentQuestionIndex < quiz.questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+                
+                if (answers[currentQuestionIndex] !== undefined) {
+                    document.querySelectorAll('.option')[answers[currentQuestionIndex]].click();
+                }
+            }
+        }
+
+        function showResults() {
+            const quiz = quizzes[currentQuizId];
+            const totalQuestions = quiz.questions.length;
+            const percentage = Math.round((score / totalQuestions) * 100);
+            const timeElapsed = Math.round((Date.now() - startTime) / 1000);
+            const minutes = Math.floor(timeElapsed / 60);
+            const seconds = timeElapsed % 60;
+
+            document.getElementById('quizContent').classList.remove('active');
+            document.getElementById('resultsSection').classList.add('active');
+
+            document.getElementById('scoreCircle').textContent = `${score}/${totalQuestions}`;
+            document.getElementById('finalScore').textContent = `${percentage}%`;
+            document.getElementById('correctAnswers').textContent = `${score}/${totalQuestions}`;
+            document.getElementById('timeTaken').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            let message = '';
+            let badge = '';
+
+            if (percentage === 100) {
+                message = 'Perfect! You are a master of this topic!';
+                badge = '🏆';
+            } else if (percentage >= 80) {
+                message = 'Excellent! You have a great understanding of this topic!';
+                badge = '⭐';
+            } else if (percentage >= 60) {
+                message = 'Good! You have a decent understanding. Try again to improve!';
+                badge = '👍';
+            } else {
+                message = 'Keep learning! Review the material and try again.';
+                badge = '📚';
+            }
+
+            document.getElementById('resultMessage').textContent = message;
+            document.getElementById('badgeContainer').innerHTML = `<div class="badge-earned">${badge}</div>`;
+        }
+
+        function backToQuizzes() {
+            document.getElementById('resultsSection').classList.remove('active');
+            document.getElementById('quizSelection').classList.add('active');
+        }
+
+        function shareResult(platform) {
+            const score = document.getElementById('scoreCircle').textContent;
+            const text = `I just completed a quiz on Swadeshi Learning and scored ${score}! Test your knowledge too!`;
+            const url = window.location.href;
+
+            const shareUrls = {
+                facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+                twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`,
+                whatsapp: `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`,
+                linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`
+            };
+
+            if (shareUrls[platform]) {
+                window.open(shareUrls[platform], '_blank', 'width=600,height=400');
+            }
+        }
+
+        // Navbar scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

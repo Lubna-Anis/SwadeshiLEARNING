@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ancient Scriptures - Swadeshi Learning</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #FF9933;
+            --secondary-color: #138808;
+            --dark-bg: #0a0b0f;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-light: rgba(255, 255, 255, 0.9);
+            --text-muted: rgba(255, 255, 255, 0.6);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+        
+        /* Navbar Styles */
+        .navbar {
+            transition: all 0.4s ease;
+            padding: 1.2rem 0;
+            background: rgba(10, 11, 15, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+        
+        .navbar.scrolled {
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            padding: 0.8rem 0;
+        }
+        
+        .navbar-brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-light) !important;
+        }
+        
+        .navbar-brand span {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 1rem !important;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after {
+            width: 80%;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .dropdown-menu {
+            background: rgba(10, 11, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 0.5rem 0;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown-item {
+            color: var(--text-light);
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: var(--glass-bg);
+            color: var(--primary-color);
+        }
+
+        .dropdown-item i {
+            margin-right: 0.5rem;
+            width: 20px;
+        }
+
+        .dropdown-submenu {
+            position: relative;
+        }
+
+        .dropdown-submenu .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -1px;
+            margin-left: 0.1rem;
+        }
+
+        .dropdown-submenu:hover > .dropdown-menu {
+            display: block;
+        }
+
+        @media (max-width: 991px) {
+            .dropdown-submenu .dropdown-menu {
+                position: static;
+                left: 0;
+                margin-left: 1rem;
+                border-left: 2px solid var(--primary-color);
+            }
+        }
+        
+        .btn-login {
+            color: var(--text-light) !important;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem !important;
+            border: none;
+            background: transparent;
+            transition: color 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            color: var(--primary-color) !important;
+        }
+
+        /* Hero Slider */
+        .hero-slider {
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 76px;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 153, 51, 0.3), rgba(19, 136, 8, 0.3));
+            backdrop-filter: blur(2px);
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+        }
+
+        .slide-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        .slide-content p {
+            font-size: 1.3rem;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Scripture Cards */
+        .scriptures-section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .scripture-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            height: 100%;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scripture-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 153, 51, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .scripture-card:hover::before {
+            left: 100%;
+        }
+
+        .scripture-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+            box-shadow: 0 15px 40px rgba(255, 153, 51, 0.2);
+        }
+
+        .scripture-cover {
+            width: 100%;
+            height: 280px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 4rem;
+            color: white;
+            position: relative;
+        }
+
+        .scripture-cover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 153, 51, 0.2), rgba(19, 136, 8, 0.2));
+            border-radius: 15px;
+        }
+
+        .scripture-cover i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .scripture-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .scripture-description {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+        }
+
+        .scripture-category {
+            display: inline-block;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+        }
+
+        /* Category Sections */
+        .category-section {
+            padding: 3rem 0;
+        }
+
+        .category-header {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .category-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .category-header p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Historical Significance */
+        .significance-section {
+            padding: 4rem 0;
+            background: var(--glass-bg);
+            border-top: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .significance-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .significance-card:hover {
+            border-color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .significance-card h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .significance-card p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-slider {
+                height: 350px;
+                margin-top: 72px;
+            }
+
+            .slide-content h1 {
+                font-size: 2rem;
+            }
+
+            .slide-content p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .category-header h2 {
+                font-size: 1.7rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-slider {
+                height: 250px;
+            }
+
+            .slide-content h1 {
+                font-size: 1.5rem;
+            }
+
+            .slide-content p {
+                font-size: 0.9rem;
+            }
+
+            .category-header {
+                padding: 1.5rem;
+            }
+
+            .significance-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><span>Swadeshi</span> Learning</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">HOME</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="libraryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            LIBRARY
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="libraryDropdown">
+                            <li><a class="dropdown-item" href="book.html"><i class="fas fa-book"></i>BOOKS</a></li>
+                            <li><a class="dropdown-item" href="scriptures.html"><i class="fas fa-om"></i>Ancient Scriptures</a></li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">
+                                    <i class="fas fa-guitar"></i>Instrumental Workshop
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="dance.html"><i class="fas fa-music"></i>Dance</a></li>
+                                    <li><a class="dropdown-item" href="music.html"><i class="fas fa-drum"></i>Music</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-dharmachakra"></i>Traditional Dance</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="featuresDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            FEATURES
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="featuresDropdown">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-laptop-code"></i>TECH</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-spa"></i>YOGA</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-leaf"></i>Ayurveda</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-hands"></i>CRAFTING</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-seedling"></i>Agriculture Program</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#quiz">QUIZ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#community">COMMUNITY</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#blog">BLOG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#faq">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-login">Login</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Slider -->
+    <div class="hero-slider">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1604866830893-c13cafa515d5?w=1920');">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <h1>Ancient Hindu Scriptures</h1>
+                <p>Discover the Timeless Wisdom of Vedic Knowledge</p>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1621944190310-e3cca1564bd7?w=1920');">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <h1>Sacred Texts of India</h1>
+                <p>Journey Through Millennia of Spiritual Heritage</p>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=1920');">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <h1>The Foundation of Dharma</h1>
+                <p>Explore the Origins of Hindu Philosophy</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Section -->
+    <section class="scriptures-section">
+        <div class="container">
+            <h2 class="section-title">History of Hindu Scriptures</h2>
+            <div class="category-header">
+                <p>Hindu scriptures represent one of the oldest and most comprehensive collections of religious and philosophical texts in the world. Dating back thousands of years, these sacred writings form the foundation of Hindu dharma, philosophy, and cultural practices. They encompass a vast range of topics including cosmology, theology, mythology, ethics, and rituals, serving as spiritual guides for millions across generations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shruti Section -->
+    <section class="category-section">
+        <div class="container">
+            <div class="category-header">
+                <h2><i class="fas fa-book-open"></i> Shruti - Divine Revelations</h2>
+                <p>Shruti literally means "that which is heard" and refers to texts considered to be of divine origin, revealed to ancient sages. These are the most authoritative scriptures in Hinduism.</p>
+            </div>
+
+            <!-- Vedas -->
+            <h3 class="text-center mb-4" style="color: var(--primary-color); font-size: 1.8rem;">The Four Vedas</h3>
+            <div class="row g-4 mb-5">
+                <div class="col-lg-3 col-md-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=400');">
+                            <i class="fas fa-hands-praying"></i>
+                        </div>
+                        <h4 class="scripture-title">Bhagavad Gita</h4>
+                        <p class="scripture-description">The divine discourse between Krishna and Arjuna on duty, dharma, and paths to liberation.</p>
+                        <span class="scripture-category">Philosophical</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400');">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <h4 class="scripture-title">Yoga Sutras</h4>
+                        <p class="scripture-description">Patanjali's foundational text on yoga philosophy and practice, outlining the eight limbs of yoga.</p>
+                        <span class="scripture-category">Philosophical</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.unsplash.com/photo-1591696205602-2f950c417cb9?w=400');">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <h4 class="scripture-title">Manusmriti</h4>
+                        <p class="scripture-description">Ancient legal text outlining dharma, ethics, and social conduct in Hindu society.</p>
+                        <span class="scripture-category">Dharma Shastra</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=400');">
+                            <i class="fas fa-book-reader"></i>
+                        </div>
+                        <h4 class="scripture-title">Brahma Sutras</h4>
+                        <p class="scripture-description">Foundational text of Vedanta philosophy, systematizing the teachings of the Upanishads.</p>
+                        <span class="scripture-category">Philosophical</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Historical Significance -->
+    <section class="significance-section">
+        <div class="container">
+            <h2 class="section-title">Historical Significance</h2>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="significance-card">
+                        <h4><i class="fas fa-history"></i> Ancient Origins</h4>
+                        <p>Hindu scriptures are among the oldest religious texts in continuous use, with the Rigveda dating back to approximately 1500 BCE. These texts preserve ancient wisdom, rituals, and philosophical insights that have shaped Indian civilization for millennia. They represent an unbroken chain of spiritual knowledge passed through generations.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="significance-card">
+                        <h4><i class="fas fa-brain"></i> Philosophical Foundation</h4>
+                        <p>The scriptures established fundamental concepts like karma, dharma, moksha, and the cyclical nature of existence. These philosophical frameworks have influenced not only Hinduism but also Buddhism, Jainism, and various schools of thought across Asia. They explore profound questions about consciousness, reality, and the purpose of existence.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="significance-card">
+                        <h4><i class="fas fa-users"></i> Cultural Impact</h4>
+                        <p>These texts have profoundly influenced Indian art, music, dance, literature, and social customs. Epic narratives like the Ramayana and Mahabharata continue to inspire modern adaptations in theater, cinema, and television. They serve as cultural touchstones that unite diverse communities across the Indian subcontinent.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="significance-card">
+                        <h4><i class="fas fa-globe-asia"></i> Global Influence</h4>
+                        <p>Hindu scriptures have gained worldwide recognition, influencing Western philosophy, science, and spirituality. Concepts from the Upanishads inspired thinkers like Schopenhauer and Emerson. The Bhagavad Gita has been translated into over 75 languages, and yogic practices derived from ancient texts are practiced globally.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- See Also Section -->
+    <section class="scriptures-section">
+        <div class="container">
+            <h2 class="section-title">See Also</h2>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="significance-card text-center">
+                        <i class="fas fa-book fa-3x mb-3" style="color: var(--primary-color);"></i>
+                        <h5>Vedic Literature</h5>
+                        <p>Comprehensive collection of Vedic texts and commentaries</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="significance-card text-center">
+                        <i class="fas fa-om fa-3x mb-3" style="color: var(--primary-color);"></i>
+                        <h5>Hindu Philosophy</h5>
+                        <p>Six schools of classical Indian philosophy</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="significance-card text-center">
+                        <i class="fas fa-praying-hands fa-3x mb-3" style="color: var(--primary-color);"></i>
+                        <h5>Hindu Rituals</h5>
+                        <p>Sacred ceremonies and practices based on scriptures</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="significance-card text-center">
+                        <i class="fas fa-landmark fa-3x mb-3" style="color: var(--primary-color);"></i>
+                        <h5>Temple Architecture</h5>
+                        <p>Sacred structures inspired by scriptural guidelines</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notes Section -->
+    <section class="category-section" style="background: var(--glass-bg);">
+        <div class="container">
+            <h2 class="section-title">Important Notes</h2>
+            <div class="significance-card">
+                <h4><i class="fas fa-info-circle"></i> Understanding the Texts</h4>
+                <p>Hindu scriptures are traditionally studied under the guidance of a guru (teacher) who can provide proper context and interpretation. Many texts contain multiple layers of meaning - literal, allegorical, and esoteric. The oral tradition of learning these texts remains important, as proper pronunciation and intonation carry spiritual significance.</p>
+            </div>
+            <div class="significance-card">
+                <h4><i class="fas fa-language"></i> Languages and Translations</h4>
+                <p>Most Hindu scriptures were originally composed in Sanskrit, though some regional texts exist in Tamil, Telugu, and other languages. While translations make these texts accessible to wider audiences, scholars emphasize that nuances and depth of meaning are best appreciated in the original Sanskrit.</p>
+            </div>
+            <div class="significance-card">
+                <h4><i class="fas fa-bookmark"></i> Dating and Authorship</h4>
+                <p>The exact dates of composition for many scriptures remain subjects of scholarly debate. Traditional Hindu belief attributes divine or sage authorship to these texts, while modern scholarship examines historical and archaeological evidence to determine approximate time periods of composition.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- References Section -->
+    <section class="scriptures-section">
+        <div class="container">
+            <h2 class="section-title">References & Bibliography</h2>
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="significance-card">
+                        <h4><i class="fas fa-book-open"></i> Primary Sources</h4>
+                        <ul style="color: var(--text-muted); line-height: 2;">
+                            <li>The Rigveda - Translated by Wendy Doniger</li>
+                            <li>The Upanishads - Translated by Eknath Easwaran</li>
+                            <li>The Bhagavad Gita - Translated by various scholars</li>
+                            <li>The Mahabharata - Critical Edition</li>
+                            <li>The Ramayana of Valmiki - Robert Goldman translation</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="significance-card">
+                        <h4><i class="fas fa-university"></i> Academic Works</h4>
+                        <ul style="color: var(--text-muted); line-height: 2;">
+                            <li>A Survey of Hinduism - Klaus K. Klostermaier</li>
+                            <li>The Hindu Religious Tradition - Thomas Hopkins</li>
+                            <li>Classical Hindu Thought - Arvind Sharma</li>
+                            <li>The Wonder That Was India - A.L. Basham</li>
+                            <li>Hindu Scriptures - Dominic Goodall (editor)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Further Reading -->
+    <section class="category-section" style="background: var(--glass-bg);">
+        <div class="container">
+            <h2 class="section-title">Further Reading</h2>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="significance-card">
+                        <h5 style="color: var(--primary-color);"><i class="fas fa-scroll"></i> For Beginners</h5>
+                        <ul style="color: var(--text-muted); line-height: 1.8;">
+                            <li>Introduction to the Vedas</li>
+                            <li>Beginner's Guide to the Upanishads</li>
+                            <li>Understanding the Bhagavad Gita</li>
+                            <li>Stories from the Puranas</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="significance-card">
+                        <h5 style="color: var(--primary-color);"><i class="fas fa-graduation-cap"></i> Advanced Studies</h5>
+                        <ul style="color: var(--text-muted); line-height: 1.8;">
+                            <li>Vedic Cosmology and Philosophy</li>
+                            <li>Commentary Traditions</li>
+                            <li>Sanskrit Language Studies</li>
+                            <li>Comparative Scripture Analysis</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="significance-card">
+                        <h5 style="color: var(--primary-color);"><i class="fas fa-book-reader"></i> Practical Application</h5>
+                        <ul style="color: var(--text-muted); line-height: 1.8;">
+                            <li>Daily Scripture Reading Practices</li>
+                            <li>Meditation on Sacred Texts</li>
+                            <li>Applying Dharma in Modern Life</li>
+                            <li>Scriptural Study Groups</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- External Links -->
+    <section class="scriptures-section">
+        <div class="container">
+            <h2 class="section-title">External Links & Resources</h2>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="significance-card text-center">
+                        <i class="fas fa-globe fa-3x mb-3" style="color: var(--primary-color);"></i>
+                        <h5>Online Libraries</h5>
+                        <p>Access digital collections of Hindu scriptures and translations</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="significance-card text-center">
+                        <i class="fas fa-video fa-3x mb-3" style="color: var(--primary-color);"></i>
+                        <h5>Video Lectures</h5>
+                        <p>Watch scholarly lectures on scripture interpretation</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="significance-card text-center">
+                        <i class="fas fa-podcast fa-3x mb-3" style="color: var(--primary-color);"></i>
+                        <h5>Audio Resources</h5>
+                        <p>Listen to recitations and discussions of sacred texts</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="significance-card text-center">
+                        <i class="fas fa-comments fa-3x mb-3" style="color: var(--primary-color);"></i>
+                        <h5>Discussion Forums</h5>
+                        <p>Join communities studying Hindu scriptures</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Hero Slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        // Auto-play slider every 4 seconds
+        setInterval(nextSlide, 4000);
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Nested dropdown functionality for mobile
+        document.querySelectorAll('.dropdown-submenu > a').forEach(function(element) {
+            element.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    let nextEl = this.nextElementSibling;
+                    if (nextEl && nextEl.classList.contains('dropdown-menu')) {
+                        nextEl.style.display = nextEl.style.display === 'block' ? 'none' : 'block';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>plash.com/photo-1614680376593-902f74cf0d41?w=400');">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h4 class="scripture-title">Rigveda</h4>
+                        <p class="scripture-description">The oldest Veda, containing 1,028 hymns dedicated to various deities. Foundation of Vedic knowledge.</p>
+                        <span class="scripture-category">Shruti</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400');">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <h4 class="scripture-title">Samaveda</h4>
+                        <p class="scripture-description">The Veda of melodies and chants, containing hymns sung during rituals and ceremonies.</p>
+                        <span class="scripture-category">Shruti</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=400');">
+                            <i class="fas fa-scroll"></i>
+                        </div>
+                        <h4 class="scripture-title">Yajurveda</h4>
+                        <p class="scripture-description">The Veda of rituals and sacrificial formulas, containing prose mantras for ceremonies.</p>
+                        <span class="scripture-category">Shruti</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.unsplash.com/photo-1591696205602-2f950c417cb9?w=400');">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h4 class="scripture-title">Atharvaveda</h4>
+                        <p class="scripture-description">The Veda of knowledge, containing hymns, spells, and incantations for daily life.</p>
+                        <span class="scripture-category">Shruti</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upanishads -->
+            <h3 class="text-center mb-4" style="color: var(--primary-color); font-size: 1.8rem;">Major Upanishads</h3>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.unsplash.com/photo-1604866830893-c13cafa515d5?w=400');">
+                            <i class="fas fa-om"></i>
+                        </div>
+                        <h4 class="scripture-title">Brihadaranyaka Upanishad</h4>
+                        <p class="scripture-description">One of the oldest and largest Upanishads, exploring the nature of Brahman and Atman.</p>
+                        <span class="scripture-category">Shruti</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.unsplash.com/photo-1621944190310-e3cca1564bd7?w=400');">
+                            <i class="fas fa-praying-hands"></i>
+                        </div>
+                        <h4 class="scripture-title">Chandogya Upanishad</h4>
+                        <p class="scripture-description">Contains the famous teaching "Tat Tvam Asi" (That Thou Art) about the unity of self and universe.</p>
+                        <span class="scripture-category">Shruti</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=400');">
+                            <i class="fas fa-dharmachakra"></i>
+                        </div>
+                        <h4 class="scripture-title">Mandukya Upanishad</h4>
+                        <p class="scripture-description">The shortest yet most profound, explaining the sacred syllable Om and states of consciousness.</p>
+                        <span class="scripture-category">Shruti</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Smriti Section -->
+    <section class="category-section" style="background: var(--glass-bg);">
+        <div class="container">
+            <div class="category-header">
+                <h2><i class="fas fa-book"></i> Smriti - Sacred Tradition</h2>
+                <p>Smriti means "that which is remembered" and includes texts composed by sages based on Shruti. These texts contain epics, laws, and mythological narratives.</p>
+            </div>
+
+            <!-- Puranas -->
+            <h3 class="text-center mb-4" style="color: var(--primary-color); font-size: 1.8rem;">The Puranas</h3>
+            <div class="row g-4 mb-5">
+                <div class="col-lg-4 col-md-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.unsplash.com/photo-1571897392467-932c69e3a2e6?w=400');">
+                            <i class="fas fa-gopuram"></i>
+                        </div>
+                        <h4 class="scripture-title">Vishnu Purana</h4>
+                        <p class="scripture-description">Dedicated to Lord Vishnu, narrating creation, preservation, and various avatars of the supreme deity.</p>
+                        <span class="scripture-category">Smriti</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=400');">
+                            <i class="fas fa-om"></i>
+                        </div>
+                        <h4 class="scripture-title">Shiva Purana</h4>
+                        <p class="scripture-description">Chronicles the glory of Lord Shiva, his manifestations, and teachings on devotion and liberation.</p>
+                        <span class="scripture-category">Smriti</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.unsplash.com/photo-1584286595398-a59f21d3d665?w=400');">
+                            <i class="fas fa-star-and-crescent"></i>
+                        </div>
+                        <h4 class="scripture-title">Bhagavata Purana</h4>
+                        <p class="scripture-description">Focuses on Lord Krishna's life, teachings, and the path of bhakti (devotion) to attain moksha.</p>
+                        <span class="scripture-category">Smriti</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Epics -->
+            <h3 class="text-center mb-4" style="color: var(--primary-color); font-size: 1.8rem;">The Great Epics</h3>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://imgs.search.brave.com/nItCWbqQWX3i4n-UAK5k4_K9bOhE9hxlG4S1xpYxKjA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly81Lmlt/aW1nLmNvbS9kYXRh/NS9TRUxMRVIvRGVm/YXVsdC8yMDIzLzYv/MzE5OTI5MDc3L1RH/L1RBL0JaLzY5Mjg2/MjkvYmhhZ2F2YWQt/Z2l0YS0xMDAweDEw/MDAuanBn');">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h4 class="scripture-title">Mahabharata</h4>
+                        <p class="scripture-description">The longest epic poem ever written, narrating the Kurukshetra war and containing the Bhagavad Gita. A comprehensive guide to dharma, politics, and spirituality with over 100,000 verses.</p>
+                        <span class="scripture-category">Smriti</span>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400');">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h4 class="scripture-title">Ramayana</h4>
+                        <p class="scripture-description">The epic tale of Lord Rama, composed by sage Valmiki. An eternal story of righteousness, devotion, duty, and the triumph of good over evil across 24,000 verses.</p>
+                        <span class="scripture-category">Smriti</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Other Hindu Texts -->
+    <section class="category-section">
+        <div class="container">
+            <div class="category-header">
+                <h2><i class="fas fa-scroll"></i> Other Important Hindu Texts</h2>
+                <p>Beyond Shruti and Smriti, Hinduism encompasses numerous other sacred texts that guide spiritual practice and philosophical understanding.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="scripture-card">
+                        <div class="scripture-cover" style="background-image: url('https://images.uns
