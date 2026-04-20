@@ -67,10 +67,10 @@ A user can teach programming to earn tokens and use those tokens to learn Artifi
 ## 📸 Screenshots
 
 ### 🏠 Homepage
-![Home](screenshots/SS1.png)
+![Home](SS1.png)
 
 ### 📚 Platform UI
-![UI](screenshots/SS2.png)
+![UI](SS2.png)
 
 ---
 
