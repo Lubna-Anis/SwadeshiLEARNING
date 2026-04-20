@@ -6,10 +6,10 @@
 
 ## 🚀 Overview
 
-Swadeshi Learning is a unique skill-exchange platform designed to make education accessible without financial barriers. Instead of paying money, users can teach their own skills to earn tokens and use those tokens to learn new skills from others.
+Swadeshi Learning is a skill-exchange platform designed to make education accessible without financial barriers. Instead of paying money, users can teach their own skills to earn tokens and use those tokens to learn new skills from others.
 
-💡 Example:  
-A user can teach programming to earn tokens and then use those tokens to learn Artificial Intelligence from another user.
+💡 **Example:**  
+A user can teach programming to earn tokens and use those tokens to learn Artificial Intelligence from another user.
 
 ---
 
@@ -34,7 +34,7 @@ A user can teach programming to earn tokens and then use those tokens to learn A
 ## 🔮 Upcoming Features
 
 - 🔐 User Authentication (Login/Signup)  
-- 👤 User Profiles with skills & tokens  
+- 👤 User Profiles with skills & token balance  
 - 🪙 Token-based transaction system  
 - 🔍 Skill search and filtering  
 - 🤝 Skill exchange request system  
@@ -44,9 +44,9 @@ A user can teach programming to earn tokens and then use those tokens to learn A
 ## 🧠 Future Vision
 
 - 🤖 AI-based skill recommendations  
-- 💬 Real-time chat between learners  
-- 🎤 Voice-based interaction  
-- 📊 Personalized dashboards  
+- 💬 Real-time chat between users  
+- 🎤 Voice-enabled interaction  
+- 📊 Personalized learning dashboards  
 
 ---
 
@@ -77,20 +77,18 @@ A user can teach programming to earn tokens and then use those tokens to learn A
 ## 🎯 Problem It Solves
 
 Many students cannot afford expensive courses and learning platforms.  
-Swadeshi Learning eliminates financial barriers by enabling **skill exchange instead of monetary transactions**, making education more inclusive and accessible.
+Swadeshi Learning removes this barrier by enabling **skill exchange instead of monetary transactions**, making learning more inclusive and accessible.
 
 ---
 
 ## 🚧 Project Status
 
-⚠️ Currently: Frontend (UI) completed  
-🚀 In Progress: Backend + Token System  
+⚠️ Frontend (UI) completed  
+🚀 Backend and core functionality under development  
 
 ---
 
 ## 🛠️ How to Run Locally
 
 ```bash
-
-git clone https://github.com/Lubna-Anis/SwadeshiLEARNING.git
 git clone https://github.com/Lubna-Anis/SwadeshiLEARNING.git
